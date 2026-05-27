@@ -1,0 +1,29 @@
+# Secrets — never commit
+.dev.vars
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Dependencies (none today, but in case you add tooling later)
+node_modules/
+
+# Cloudflare / Wrangler
+.wrangler/
+.mf/
+
+# Build output (none today)
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*

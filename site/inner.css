@@ -1,0 +1,259 @@
+/* Inner pages — Services, About, Contact */
+.page-head {
+  padding: 64px 64px 48px;
+  border-bottom: 1px solid var(--ink);
+}
+.page-head .eyebrow { display: block; }
+.page-head h1 {
+  font-family: var(--serif); font-size: 96px; font-weight: 400;
+  line-height: 0.95; letter-spacing: -0.03em; margin-top: 14px;
+}
+.page-head h1 em { font-style: italic; color: var(--terra); }
+.page-head .lede {
+  margin-top: 24px; font-family: var(--serif);
+  font-size: 22px; line-height: 1.5; max-width: 720px; color: var(--ink-2);
+}
+
+/* ======================== Services ======================== */
+.services-page .service-block {
+  padding: 80px 64px; border-bottom: 1px solid var(--line);
+  display: grid; grid-template-columns: 120px 1fr 360px; gap: 48px; align-items: start;
+  scroll-margin-top: 96px;
+}
+.services-page .service-block .num {
+  font-family: var(--mono); font-size: 12px;
+  letter-spacing: 0.14em; color: var(--terra);
+}
+.services-page .service-block h2 {
+  font-family: var(--serif); font-size: 56px; font-weight: 400;
+  letter-spacing: -0.02em; line-height: 1.02;
+}
+.services-page .service-block .desc {
+  margin-top: 22px; font-size: 18px; color: var(--ink-2);
+  line-height: 1.6; max-width: 640px;
+}
+.services-page .tags {
+  margin-top: 28px; display: flex; flex-wrap: wrap; gap: 6px;
+}
+.services-page .tag {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-2);
+  padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px;
+}
+.services-page .out-card {
+  background: var(--cream); padding: 28px; border-radius: 4px;
+  position: sticky; top: 96px;
+}
+.services-page .out-card .label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--muted);
+}
+.services-page .out-card ul { margin: 14px 0 0; padding: 0; list-style: none; }
+.services-page .out-card li {
+  padding: 10px 0; border-top: 1px dashed var(--line);
+  font-size: 14px; color: var(--ink-2);
+}
+.services-page .closer {
+  padding: 100px 64px; text-align: center;
+  background: var(--ink); color: var(--paper);
+}
+.services-page .closer h2 {
+  font-family: var(--serif); font-size: 64px; font-weight: 400; line-height: 1;
+}
+.services-page .closer h2 em { color: var(--terra); font-style: italic; }
+
+/* ======================== About ======================== */
+.about-page .intro {
+  padding: 80px 64px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+}
+.about-page .intro h1 {
+  font-family: var(--serif); font-size: 96px; font-weight: 400;
+  line-height: 0.95; letter-spacing: -0.03em; margin-top: 14px;
+}
+.about-page .intro .lede {
+  margin-top: 28px; font-family: var(--serif);
+  font-size: 22px; line-height: 1.5; color: var(--ink-2);
+}
+.about-page .intro p.body {
+  margin-top: 20px; font-size: 16px; line-height: 1.7; color: var(--ink-2);
+}
+.about-page .portrait {
+  aspect-ratio: 4/5; border-radius: 2px; position: relative; overflow: hidden;
+  background-image: url('logos/lars.png');
+  background-size: cover;
+  background-position: center 25%;
+  background-color: var(--cream-2);
+}
+.about-page .intro-flip { direction: rtl; }
+.about-page .intro-flip > * { direction: ltr; }
+
+.about-page .portrait-ram {
+  background-image: linear-gradient(135deg, #ddd1bd 0%, #c9bba2 100%) !important;
+  position: relative;
+}
+.about-page .portrait-ram::after {
+  content: 'Ram — Partner & Principal Engineer';
+}
+.about-page .portrait-ram::before {
+  content: 'R';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-style: italic; font-size: 240px;
+  color: var(--terra); opacity: .35;
+}
+.about-page .portrait::after {
+  content: 'Lars Hirsch — Founder';
+  position: absolute; bottom: 16px; left: 16px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.1em; color: var(--paper);
+  background: rgba(26,23,20,0.55);
+  padding: 6px 10px; border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+
+.about-page .career {
+  padding: 80px 64px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.about-page .career-head {
+  margin-top: 32px; padding-bottom: 12px; border-bottom: 1px solid var(--ink);
+  display: grid; grid-template-columns: 120px 1fr 1fr 200px; gap: 24px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+}
+.about-page .career-row {
+  display: grid; grid-template-columns: 120px 1fr 1fr 200px; gap: 24px;
+  padding: 22px 0; border-bottom: 1px solid var(--line); align-items: baseline;
+}
+.about-page .career-row .yr {
+  font-family: var(--mono); font-size: 12px; color: var(--terra);
+}
+.about-page .career-row .co { font-family: var(--serif); font-size: 22px; }
+.about-page .career-row .role { font-size: 14px; color: var(--ink-2); }
+.about-page .career-row .domain { font-size: 13px; color: var(--muted); }
+
+.about-page .extras {
+  padding: 80px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+}
+.about-page .extras .item {
+  margin-top: 24px; padding: 24px 0; border-top: 1px solid var(--line);
+}
+.about-page .extras h3 { font-family: var(--serif); font-size: 24px; font-weight: 400; }
+.about-page .extras p {
+  margin-top: 8px; color: var(--muted); font-size: 14px; line-height: 1.7;
+}
+
+/* ======================== Contact ======================== */
+.contact-page { background: var(--cream); }
+.contact-page .wrap {
+  padding: 80px 64px;
+  display: grid; grid-template-columns: 1fr 520px; gap: 64px; align-items: start;
+}
+.contact-page .info h1 {
+  font-family: var(--serif); font-size: 96px; font-weight: 400;
+  line-height: 0.95; letter-spacing: -0.03em; margin-top: 14px;
+}
+.contact-page .info h1 em { font-style: italic; color: var(--terra); }
+.contact-page .info .lede {
+  margin-top: 24px; font-family: var(--serif);
+  font-size: 22px; line-height: 1.5; color: var(--ink-2); max-width: 560px;
+}
+.contact-page .reach {
+  margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line);
+}
+.contact-page .reach-grid {
+  margin-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 24px; max-width: 520px;
+}
+.contact-page .reach-grid .label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+}
+.contact-page .reach-grid .val {
+  margin-top: 6px; font-family: var(--serif); font-size: 20px;
+}
+.contact-page .reach-grid a.val { transition: color .15s; }
+.contact-page .reach-grid a.val:hover { color: var(--terra); }
+
+.contact-page form {
+  background: var(--paper); padding: 32px;
+  border-radius: 4px; border: 1px solid var(--line);
+  position: sticky; top: 96px;
+}
+.contact-page .field { margin-top: 20px; }
+.contact-page .field label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted); display: block;
+}
+.contact-page .field input,
+.contact-page .field textarea {
+  margin-top: 6px; width: 100%; padding: 10px 0;
+  font-family: var(--serif); font-size: 16px; color: var(--ink);
+  background: transparent; border: 0; border-bottom: 1px solid var(--line);
+  outline: none; resize: vertical;
+  transition: border-color .15s;
+}
+.contact-page .field input:focus,
+.contact-page .field textarea:focus { border-bottom-color: var(--terra); }
+.contact-page .field.error input,
+.contact-page .field.error textarea { border-bottom-color: var(--terra); }
+.contact-page .field .err {
+  margin-top: 6px; font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--terra);
+}
+.contact-page .chips {
+  margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px;
+}
+.contact-page .chip {
+  font-size: 13px; padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--paper);
+  color: var(--ink-2); cursor: pointer; transition: all .15s;
+  font-family: var(--sans);
+}
+.contact-page .chip:hover { border-color: var(--ink); }
+.contact-page .chip.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.contact-page .submit {
+  margin-top: 28px; width: 100%; justify-content: center;
+  background: var(--terra); border-color: var(--terra);
+}
+.contact-page .submit:disabled {
+  opacity: .6; cursor: not-allowed; transform: none;
+}
+.contact-page .success {
+  background: var(--paper); padding: 56px 32px; text-align: center;
+  border-radius: 4px; border: 1px solid var(--line);
+}
+.contact-page .success .check {
+  width: 56px; height: 56px; border-radius: 999px;
+  background: var(--terra); color: var(--paper);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 28px; margin-bottom: 20px;
+}
+.contact-page .success h3 {
+  font-family: var(--serif); font-size: 32px; font-weight: 400;
+}
+.contact-page .success p {
+  margin-top: 12px; color: var(--muted); font-size: 15px; line-height: 1.6;
+}
+
+@media (max-width: 1100px) {
+  .services-page .service-block { grid-template-columns: 80px 1fr; }
+  .services-page .out-card { grid-column: 1 / -1; position: static; }
+  .about-page .intro { grid-template-columns: 1fr; }
+  .contact-page .wrap { grid-template-columns: 1fr; }
+  .contact-page form { position: static; }
+}
+@media (max-width: 800px) {
+  .page-head, .services-page .service-block, .services-page .closer,
+  .about-page .intro, .about-page .career, .about-page .extras,
+  .contact-page .wrap { padding-left: 24px; padding-right: 24px; }
+  .page-head h1, .about-page .intro h1, .contact-page .info h1 { font-size: 56px; }
+  .services-page .service-block h2 { font-size: 36px; }
+  .services-page .closer h2 { font-size: 40px; }
+  .about-page .career-head, .about-page .career-row {
+    grid-template-columns: 80px 1fr; row-gap: 4px;
+  }
+  .about-page .career-row .role, .about-page .career-row .domain { grid-column: 2; }
+  .about-page .extras { grid-template-columns: 1fr; }
+  .contact-page .reach-grid { grid-template-columns: 1fr; }
+}

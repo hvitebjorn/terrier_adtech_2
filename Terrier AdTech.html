@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Terrier AdTech — Redesign explorations</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" />
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; background: #f0eee9; }
+    body { font-family: 'Inter Tight', system-ui, sans-serif; }
+  </style>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="design-canvas.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="terrier-mark.jsx"></script>
+  <script type="text/babel" src="v-subtle.jsx"></script>
+  <script type="text/babel" src="v-editorial.jsx"></script>
+  <script type="text/babel" src="v-warm.jsx"></script>
+  <script type="text/babel" src="v-data.jsx"></script>
+  <script type="text/babel" src="inner-pages.jsx"></script>
+
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "palette": [
+        "#faf7f1",
+        "#1a1714",
+        "#c0593a",
+        "#f4efe6"
+      ],
+      "serif": "Newsreader",
+      "sans": "Inter Tight"
+    }/*EDITMODE-END*/;
+
+    function applyTokens(t) {
+      const r = document.documentElement;
+      const [paper, ink, terra, cream] = t.palette;
+      r.style.setProperty('--paper', paper);
+      r.style.setProperty('--ink', ink);
+      r.style.setProperty('--terra', terra);
+      r.style.setProperty('--cream', cream);
+      // derive a darker cream from the cream
+      r.style.setProperty('--cream-2', mix(cream, ink, 0.08));
+      r.style.setProperty('--ink-2', mix(ink, paper, 0.12));
+      r.style.setProperty('--muted', mix(ink, paper, 0.55));
+      r.style.setProperty('--muted-2', mix(ink, paper, 0.7));
+      r.style.setProperty('--line', `${ink}1f`);
+      r.style.setProperty('--line-soft', `${ink}10`);
+      r.style.setProperty('--terra-deep', mix(terra, ink, 0.3));
+      r.style.setProperty('--serif', `'${t.serif}', Georgia, serif`);
+      r.style.setProperty('--sans', `'${t.sans}', system-ui, sans-serif`);
+    }
+
+    function hexToRgb(h) {
+      h = h.replace('#', '');
+      if (h.length === 3) h = h.split('').map(c => c + c).join('');
+      return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+    }
+    function rgbToHex(r,g,b) {
+      return '#' + [r,g,b].map(v => Math.round(v).toString(16).padStart(2,'0')).join('');
+    }
+    function mix(a, b, t) {
+      const A = hexToRgb(a), B = hexToRgb(b);
+      return rgbToHex(A[0]*(1-t)+B[0]*t, A[1]*(1-t)+B[1]*t, A[2]*(1-t)+B[2]*t);
+    }
+
+    function App() {
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      React.useLayoutEffect(() => { applyTokens(t); }, [t]);
+
+      return (
+        <>
+          <DesignCanvas>
+            <DCSection id="bold" title="Bold redesigns" subtitle="Three confident directions for the homepage. Swipe / drag horizontally.">
+              <DCArtboard id="editorial" label="A · Editorial — confident, modern" width={1440} height={3400}>
+                <VariantEditorial />
+              </DCArtboard>
+              <DCArtboard id="warm" label="B · Warm — founder-forward, human" width={1440} height={3400}>
+                <VariantWarm />
+              </DCArtboard>
+              <DCArtboard id="data" label="C · Data-forward — technical, dense" width={1440} height={3000}>
+                <VariantData />
+              </DCArtboard>
+            </DCSection>
+
+            <DCSection id="subtle" title="Subtle refresh" subtitle="Same content arrangement as today's site, with cleaner type, hierarchy, and rhythm.">
+              <DCArtboard id="subtle" label="D · Subtle refresh" width={1440} height={2400}>
+                <VariantSubtle />
+              </DCArtboard>
+            </DCSection>
+
+            <DCSection id="inner" title="Inner pages" subtitle="Following the Editorial direction. Services index, About / founder, Contact form.">
+              <DCArtboard id="services" label="Services" width={1440} height={2400}>
+                <PageServices />
+              </DCArtboard>
+              <DCArtboard id="about" label="About" width={1440} height={1700}>
+                <PageAbout />
+              </DCArtboard>
+              <DCArtboard id="contact" label="Contact" width={1440} height={1100}>
+                <PageContact />
+              </DCArtboard>
+            </DCSection>
+          </DesignCanvas>
+
+          <TweaksPanel title="Tweaks">
+            <TweakSection label="Palette" />
+            <TweakColor
+              label="Theme"
+              value={t.palette}
+              options={[
+                ['#faf7f1', '#1a1714', '#c0593a', '#f4efe6'],
+                ['#f6f1e6', '#241e17', '#b14a2c', '#ebe1cb'],
+                ['#fbf9f3', '#0f1614', '#3a6b5a', '#ecebe0'],
+                ['#1a1714', '#faf7f1', '#d9764f', '#2c2620'],
+                ['#fafaf9', '#0a0a0a', '#3b6df0', '#f1f1ef'],
+              ]}
+              onChange={(v) => setTweak('palette', v)}
+            />
+            <TweakSection label="Typography" />
+            <TweakSelect
+              label="Serif (display)"
+              value={t.serif}
+              options={['Newsreader', 'Source Serif 4', 'Fraunces', 'Instrument Serif']}
+              onChange={(v) => setTweak('serif', v)}
+            />
+            <TweakSelect
+              label="Sans (body)"
+              value={t.sans}
+              options={['Inter Tight', 'Manrope', 'Inter']}
+              onChange={(v) => setTweak('sans', v)}
+            />
+          </TweaksPanel>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
