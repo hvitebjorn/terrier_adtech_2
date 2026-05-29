@@ -2,7 +2,7 @@
 function TerrierMark({ size = 22, style }) {
   return (
     <img
-      src="logos/symbol.png"
+      src={(window.__resources && window.__resources.symbol) || "logos/symbol-green.png"}
       width={size}
       height={size}
       alt=""

@@ -1,18 +1,18 @@
 /* Terrier AdTech — shared tokens & base */
 :root {
-  --paper: #faf7f1;
-  --cream: #f4efe6;
-  --cream-2: #ebe4d6;
-  --ink: #1a1714;
-  --ink-2: #2c2620;
-  --muted: #6b5e51;
-  --muted-2: #8a7d6e;
-  --line: rgba(26,23,20,0.12);
-  --line-soft: rgba(26,23,20,0.06);
-  --terra: #c0593a;
-  --terra-deep: #9c4628;
-  --clay: #a89580;
-  --moss: #5a6b3f;
+  --paper: #ffffff;
+  --cream: #f4f6f4;
+  --cream-2: #e6ebe6;
+  --ink: #1e2a5c;
+  --ink-2: #2b3870;
+  --muted: #6b7494;
+  --muted-2: #9097b0;
+  --line: rgba(30,42,92,0.12);
+  --line-soft: rgba(30,42,92,0.06);
+  --terra: #4da13f;
+  --terra-deep: #3c7e30;
+  --clay: #8590a8;
+  --moss: #4da13f;
   --serif: 'Newsreader', 'Source Serif 4', Georgia, serif;
   --sans: 'Inter Tight', 'Inter', -apple-system, sans-serif;
   --mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
@@ -109,7 +109,7 @@ body { margin: 0; background: var(--paper); font-family: var(--sans); color: var
   display: flex; align-items: center; justify-content: space-between;
   padding: 24px 64px;
   position: sticky; top: 0; z-index: 50;
-  background: rgba(250,247,241,0.92);
+  background: rgba(255,255,255,0.92);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line-soft);

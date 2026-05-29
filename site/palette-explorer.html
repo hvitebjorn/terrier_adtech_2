@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Palette explorer — Terrier AdTech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+<template id="__bundler_thumbnail" data-bg-color="#1a1714">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#1a1714"/>
+    <g transform="translate(360 240)">
+      <rect x="0"   y="0"   width="100" height="320" rx="6" fill="#faf7f1"/>
+      <rect x="120" y="0"   width="100" height="320" rx="6" fill="#fbfaf7"/>
+      <rect x="240" y="0"   width="100" height="320" rx="6" fill="#f5f2eb"/>
+      <rect x="0"   y="0"   width="100" height="60"  rx="6" fill="#c0593a"/>
+      <rect x="120" y="0"   width="100" height="60"  rx="6" fill="#c0593a"/>
+      <rect x="240" y="0"   width="100" height="60"  rx="6" fill="#b8472a"/>
+      <rect x="360" y="0"   width="100" height="320" rx="6" fill="#f0eee6"/>
+      <rect x="480" y="0"   width="100" height="320" rx="6" fill="#ecebe5"/>
+      <rect x="360" y="0"   width="100" height="60"  rx="6" fill="#c0593a"/>
+      <rect x="480" y="0"   width="100" height="60"  rx="6" fill="#c08a2a"/>
+    </g>
+    <text x="600" y="650" text-anchor="middle"
+      font-family="Georgia, serif" font-style="italic"
+      font-size="42" fill="#faf7f1" opacity="0.85">palettes</text>
+  </svg>
+</template>
+<style>
+  :root {
+    --serif: 'Newsreader', Georgia, serif;
+    --sans: 'Inter Tight', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--sans); background: #1a1714; color: #faf7f1; }
+
+  .explorer-head {
+    padding: 56px 56px 32px; max-width: 1200px;
+  }
+  .explorer-head .eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(250,247,241,.5);
+  }
+  .explorer-head h1 {
+    font-family: var(--serif); font-weight: 400; font-size: 56px;
+    line-height: 1.02; letter-spacing: -0.025em;
+    margin: 14px 0 18px; max-width: 800px;
+  }
+  .explorer-head p {
+    font-family: var(--serif); font-size: 19px; line-height: 1.5;
+    color: rgba(250,247,241,.72); max-width: 680px; margin: 0;
+  }
+  .explorer-head p strong { color: #faf7f1; font-weight: 500; }
+
+  .palette-stack {
+    display: flex; flex-direction: column; gap: 0;
+  }
+
+  /* ============================================================
+     Each palette renders the same hero/strip mockup
+     using its own CSS custom properties.
+     ============================================================ */
+  .pal {
+    background: var(--paper);
+    color: var(--ink);
+    border-top: 1px solid rgba(255,255,255,.08);
+    position: relative;
+  }
+  .pal .pal-meta {
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    padding: 28px 56px 0;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .pal .pal-meta .num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--ink); color: var(--paper);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 11px;
+  }
+  .pal .pal-meta .name {
+    font-family: var(--serif); font-size: 22px;
+    text-transform: none; letter-spacing: -0.01em; color: var(--ink);
+  }
+  .pal .pal-meta .swatches {
+    display: flex; gap: 6px; margin-left: auto;
+  }
+  .pal .pal-meta .swatches i {
+    width: 26px; height: 26px; border-radius: 4px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
+    display: block;
+  }
+  .pal .pal-meta .tokens {
+    font-family: var(--mono); font-size: 10px; color: var(--muted-2);
+  }
+
+  /* hero block */
+  .pal .hero {
+    padding: 40px 56px 56px;
+    display: grid; grid-template-columns: 1fr 280px;
+    gap: 56px; align-items: end;
+    border-bottom: 1px solid var(--ink);
+  }
+  .pal .hero h2 {
+    font-family: var(--serif); font-weight: 400; margin: 0;
+    font-size: 92px; line-height: 0.92; letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+  .pal .hero h2 .ital { font-style: italic; color: var(--terra); }
+  .pal .hero-side .meta {
+    font-family: var(--mono); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--muted); margin-bottom: 12px;
+  }
+  .pal .hero-side .lede {
+    font-family: var(--serif); font-size: 17px; line-height: 1.45;
+    color: var(--ink); margin: 0 0 18px;
+  }
+  .pal .hero-side .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .pal .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 16px; font-size: 13px; font-weight: 500;
+    font-family: var(--sans); border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--ink); background: var(--ink); color: var(--paper);
+    text-decoration: none;
+  }
+  .pal .btn.ghost { background: transparent; color: var(--ink); }
+
+  /* marquee strip */
+  .pal .strip {
+    padding: 14px 56px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink);
+    display: flex; gap: 40px; align-items: center;
+    border-bottom: 1px solid var(--ink); background: var(--cream);
+    flex-wrap: wrap;
+  }
+  .pal .strip .dot {
+    width: 5px; height: 5px; border-radius: 50%; background: var(--terra);
+  }
+  .pal .strip .pill {
+    font-family: var(--serif); font-size: 15px;
+    text-transform: none; letter-spacing: 0; color: var(--ink);
+  }
+
+  /* dark section preview */
+  .pal .dark-block {
+    padding: 32px 56px 40px;
+    background: var(--ink); color: var(--paper);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+  }
+  .pal .dark-block .eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(255,255,255,.5);
+  }
+  .pal .dark-block h3 {
+    font-family: var(--serif); font-weight: 400; font-size: 28px;
+    line-height: 1.15; margin: 12px 0 0; color: var(--paper);
+  }
+  .pal .dark-block .accent { color: var(--terra); font-style: italic; }
+  .pal .dark-block .row {
+    display: flex; align-items: baseline; gap: 16px;
+    padding: 10px 0; border-top: 1px solid rgba(255,255,255,.1);
+    font-family: var(--mono); font-size: 11px;
+    color: rgba(255,255,255,.7); letter-spacing: 0.04em;
+  }
+  .pal .dark-block .row .num { color: var(--terra); }
+  .pal .dark-block .row .label { color: var(--paper); }
+
+  /* ============================================================
+     The six palettes
+     ============================================================ */
+
+  /* 01 — Current: Warm Cream + Terra */
+  .pal-warm-cream {
+    --paper: #faf7f1; --cream: #f4efe6; --cream-2: #ebe4d6;
+    --ink: #1a1714; --ink-2: #2c2620;
+    --muted: #6b5e51; --muted-2: #8a7d6e;
+    --terra: #c0593a;
+  }
+
+  /* 02 — Off-white + Terra (cleaner, contemporary editorial) */
+  .pal-off-white {
+    --paper: #fbfaf7; --cream: #f3f1ec; --cream-2: #e9e6df;
+    --ink: #16140f; --ink-2: #2a2620;
+    --muted: #757066; --muted-2: #97928a;
+    --terra: #c0593a;
+  }
+
+  /* 03 — Bone + Ink (true editorial, near-mono with one accent) */
+  .pal-bone {
+    --paper: #f5f2eb; --cream: #ebe6db; --cream-2: #ddd7c8;
+    --ink: #15140f; --ink-2: #2a2620;
+    --muted: #6b6357; --muted-2: #908676;
+    --terra: #b8472a;
+  }
+
+  /* 04 — Soft sage + Terra (organic, less expected) */
+  .pal-sage {
+    --paper: #f0eee6; --cream: #e2e3d6; --cream-2: #cfd2c0;
+    --ink: #1a1f17; --ink-2: #2a3026;
+    --muted: #677064; --muted-2: #8a937e;
+    --terra: #c0593a;
+  }
+
+  /* 05 — Cool stone + Mustard (architect/firm vibe) */
+  .pal-stone {
+    --paper: #ecebe5; --cream: #dededa; --cream-2: #c9c9c0;
+    --ink: #1a1d22; --ink-2: #2a2d33;
+    --muted: #6a6d73; --muted-2: #8d9098;
+    --terra: #c08a2a;
+  }
+
+  /* 06 — Deep ink reversed (dark mode, premium/cinema) */
+  .pal-deep-ink {
+    --paper: #161311; --cream: #1f1a16; --cream-2: #2a221c;
+    --ink: #f4eee0; --ink-2: #e0d8c5;
+    --muted: #9a8d7a; --muted-2: #6b6052;
+    --terra: #d97757;
+  }
+  .pal-deep-ink .pal-meta .name { color: #f4eee0; }
+  .pal-deep-ink .pal-meta .num { background: #f4eee0; color: #161311; }
+  .pal-deep-ink .strip { background: #1f1a16; }
+  .pal-deep-ink .dark-block { background: #0e0c0a; }
+  .pal-deep-ink .hero { border-bottom-color: rgba(244,238,224,.18); }
+  .pal-deep-ink .strip { border-bottom-color: rgba(244,238,224,.18); }
+  .pal-deep-ink .btn.ghost { color: #f4eee0; border-color: #f4eee0; }
+  .pal-deep-ink .btn { background: #f4eee0; color: #161311; border-color: #f4eee0; }
+
+  /* ============================================================
+     Radical directions — different vibes entirely
+     ============================================================ */
+
+  /* 07 — Snow / Brutalist red */
+  .pal-snow {
+    --paper: #ffffff; --cream: #f1f1f1; --cream-2: #e6e6e6;
+    --ink: #000000; --ink-2: #1a1a1a;
+    --muted: #666666; --muted-2: #999999;
+    --terra: #ff3d00;
+  }
+
+  /* 08 — Terminal: black + amber */
+  .pal-terminal {
+    --paper: #0a0a0a; --cream: #141414; --cream-2: #1f1f1f;
+    --ink: #ffb000; --ink-2: #d49000;
+    --muted: #8a6a1f; --muted-2: #5e4814;
+    --terra: #4ade80;
+    --serif-override: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  .pal-terminal h2, .pal-terminal h3, .pal-terminal .pal-meta .name,
+  .pal-terminal .strip .pill, .pal-terminal .hero-side .lede {
+    font-family: var(--serif-override) !important;
+    letter-spacing: 0 !important;
+  }
+  .pal-terminal h2 { font-size: 76px !important; line-height: 1 !important; }
+  .pal-terminal h2 .ital { font-style: normal !important; }
+  .pal-terminal .pal-meta .name { font-style: normal; }
+  .pal-terminal .pal-meta .num { background: #ffb000; color: #0a0a0a; }
+  .pal-terminal .strip { background: #141414; border-bottom-color: rgba(255,176,0,.25); }
+  .pal-terminal .hero { border-bottom-color: rgba(255,176,0,.25); }
+  .pal-terminal .dark-block { background: #141414; border-top: 1px solid rgba(255,176,0,.25); }
+  .pal-terminal .btn { background: #ffb000; color: #0a0a0a; border-color: #ffb000; }
+  .pal-terminal .btn.ghost { background: transparent; color: #ffb000; border-color: #ffb000; }
+
+  /* 09 — Risograph: eggshell + tomato + cobalt */
+  .pal-riso {
+    --paper: #f5efe2; --cream: #ece4d0; --cream-2: #ddd2b8;
+    --ink: #1d2a5c; --ink-2: #2e3d75;
+    --muted: #5d6790; --muted-2: #8088ab;
+    --terra: #e64b35;
+  }
+  .pal-riso .strip { background: #1d2a5c; color: #f5efe2; border-bottom-color: #e64b35; }
+  .pal-riso .strip .pill { color: #f5efe2; }
+  .pal-riso .strip .dot { background: #e64b35; }
+  .pal-riso .dark-block { background: #e64b35; color: #f5efe2; }
+  .pal-riso .dark-block h3 { color: #f5efe2; }
+  .pal-riso .dark-block .accent { color: #1d2a5c; font-style: italic; }
+  .pal-riso .dark-block .row .num { color: #1d2a5c; }
+  .pal-riso .dark-block .row .label { color: #f5efe2; }
+  .pal-riso .dark-block .eyebrow { color: rgba(245,239,226,.7); }
+
+  /* 10 — Acid: bone + chartreuse */
+  .pal-acid {
+    --paper: #f2efe6; --cream: #e7e2d2; --cream-2: #d6d0bb;
+    --ink: #0a0a08; --ink-2: #1a1a16;
+    --muted: #5a5a52; --muted-2: #8a8a80;
+    --terra: #c4d92a;
+  }
+  .pal-acid .hero h2 .ital { color: #0a0a08; background: #c4d92a; padding: 0 0.1em; font-style: normal; }
+  .pal-acid .strip { background: #c4d92a; color: #0a0a08; border-bottom-color: #0a0a08; }
+  .pal-acid .strip .pill { color: #0a0a08; }
+  .pal-acid .strip .dot { background: #0a0a08; }
+  .pal-acid .dark-block .accent { color: #c4d92a; }
+  .pal-acid .dark-block .row .num { color: #c4d92a; }
+
+  /* 11 — Glacial: pale blue + navy + ice */
+  .pal-glacial {
+    --paper: #edf0f2; --cream: #dde3e8; --cream-2: #c5cdd4;
+    --ink: #0d1b2a; --ink-2: #1a2c3e;
+    --muted: #5a6b7d; --muted-2: #8a98a8;
+    --terra: #2196b5;
+  }
+  .pal-glacial .dark-block { background: #0d1b2a; }
+  .pal-glacial .dark-block .accent { color: #7fcdd8; }
+  .pal-glacial .dark-block .row .num { color: #7fcdd8; }
+  .pal-glacial .hero h2 .ital { color: #2196b5; }
+
+  /* ============================================================
+     Terrier classic family — echoes of terrieradtech.com
+     (kelly green + navy + California sky)
+     ============================================================ */
+
+  /* 13 — Terrier Classic: white + kelly green + navy */
+  .pal-terrier-classic {
+    --paper: #ffffff; --cream: #f4f6f4; --cream-2: #e6ebe6;
+    --ink: #1e2a5c; --ink-2: #2b3870;
+    --muted: #6b7494; --muted-2: #9097b0;
+    --terra: #4da13f;
+  }
+  .pal-terrier-classic .strip { background: #f4f6f4; border-bottom-color: #1e2a5c; }
+  .pal-terrier-classic .hero { border-bottom-color: #1e2a5c; }
+  .pal-terrier-classic .hero h2 .ital { color: #4da13f; }
+  .pal-terrier-classic .dark-block .accent { color: #4da13f; }
+  .pal-terrier-classic .dark-block .row .num { color: #4da13f; }
+
+  /* 14 — Coastal: sky + navy + green */
+  .pal-coastal {
+    --paper: #eef4f8; --cream: #dde7ee; --cream-2: #c5d4df;
+    --ink: #1e2a5c; --ink-2: #2b3870;
+    --muted: #5d6a8a; --muted-2: #8590a8;
+    --terra: #4da13f;
+  }
+  .pal-coastal .strip { background: #dde7ee; border-bottom-color: #1e2a5c; }
+  .pal-coastal .hero { border-bottom-color: #1e2a5c; }
+  .pal-coastal .dark-block .accent { color: #7fb872; }
+  .pal-coastal .dark-block .row .num { color: #7fb872; }
+
+  /* 15 — Sunlit: warm white + green + sand + navy */
+  .pal-sunlit {
+    --paper: #fcfaf4; --cream: #f3eedf; --cream-2: #e6deca;
+    --ink: #1e2a5c; --ink-2: #2b3870;
+    --muted: #6b6452; --muted-2: #968d76;
+    --terra: #4da13f;
+  }
+  .pal-sunlit .strip { background: #f3eedf; border-bottom-color: #1e2a5c; }
+  .pal-sunlit .hero { border-bottom-color: #1e2a5c; }
+  .pal-sunlit .hero h2 .ital { color: #4da13f; }
+  .pal-sunlit .dark-block { background: #1e2a5c; }
+  .pal-sunlit .dark-block .accent { color: #d4b87a; font-style: italic; }
+  .pal-sunlit .dark-block .row .num { color: #d4b87a; }
+
+  /* 16 — Editorial-Terrier: cream + navy + green accent */
+  .pal-editorial-terrier {
+    --paper: #faf7f1; --cream: #f1ede2; --cream-2: #e3dcca;
+    --ink: #1e2a5c; --ink-2: #2b3870;
+    --muted: #6b6452; --muted-2: #8a8270;
+    --terra: #4da13f;
+  }
+  .pal-editorial-terrier .strip { background: #f1ede2; }
+  .pal-editorial-terrier .dark-block { background: #1e2a5c; }
+  .pal-editorial-terrier .dark-block .accent { color: #7ec56f; font-style: italic; }
+  .pal-editorial-terrier .dark-block .row .num { color: #7ec56f; }
+
+  /* 12 — Moss: deep forest reverse */
+  .pal-moss {
+    --paper: #1f2a1f; --cream: #2a3a2a; --cream-2: #344533;
+    --ink: #e8e0cd; --ink-2: #d4cab2;
+    --muted: #a59a82; --muted-2: #756c58;
+    --terra: #d8893d;
+  }
+  .pal-moss .pal-meta .name { color: #e8e0cd; }
+  .pal-moss .pal-meta .num { background: #e8e0cd; color: #1f2a1f; }
+  .pal-moss .strip { background: #2a3a2a; border-bottom-color: rgba(232,224,205,.2); }
+  .pal-moss .hero { border-bottom-color: rgba(232,224,205,.2); }
+  .pal-moss .dark-block { background: #131a13; }
+  .pal-moss .btn { background: #e8e0cd; color: #1f2a1f; border-color: #e8e0cd; }
+  .pal-moss .btn.ghost { background: transparent; color: #e8e0cd; border-color: #e8e0cd; }
+
+  /* footer note */
+  .pal-foot {
+    padding: 56px; background: #1a1714; color: rgba(250,247,241,.65);
+    font-family: var(--serif); font-size: 17px; line-height: 1.55;
+    max-width: 800px;
+  }
+  .pal-foot strong { color: #faf7f1; font-weight: 500; }
+  .pal-foot a {
+    color: #c0593a; text-decoration: none;
+    border-bottom: 1px solid rgba(192,89,58,.5);
+  }
+
+  @media (max-width: 900px) {
+    .explorer-head { padding: 32px 24px 16px; }
+    .explorer-head h1 { font-size: 36px; }
+    .pal .pal-meta { padding: 20px 24px 0; }
+    .pal .pal-meta .swatches { margin-left: 0; }
+    .pal .hero { padding: 24px 24px 32px; grid-template-columns: 1fr; gap: 24px; }
+    .pal .hero h2 { font-size: 48px; }
+    .pal .strip { padding: 12px 24px; gap: 20px; font-size: 10px; }
+    .pal .strip .pill { font-size: 14px; }
+    .pal .dark-block { padding: 24px; grid-template-columns: 1fr; gap: 24px; }
+    .pal-foot { padding: 32px 24px; font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+  <header class="explorer-head">
+    <div class="eyebrow">Palette explorer · 16 directions</div>
+    <h1>Same hero, sixteen grounds.</h1>
+    <p><strong>01–06</strong> — variations on the editorial direction. <strong>07–12</strong> — radical departures. <strong>13–16</strong> — pulled from terrieradtech.com's actual brand (green + navy). Say <em>"apply #N"</em> and I'll roll it across every page.</p>
+  </header>
+  <style>
+    .pal-divider {
+      padding: 56px; background: #1a1714; color: rgba(250,247,241,.55);
+      font-family: 'Newsreader', Georgia, serif; font-style: italic; font-size: 22px;
+      letter-spacing: -0.01em;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .pal-divider strong { color: #faf7f1; font-style: normal; font-weight: 500; }
+    .pal-divider .tag {
+      display: inline-block; margin-right: 12px; padding: 4px 10px; border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace; font-style: normal; font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase; background: #c0593a; color: #faf7f1;
+    }
+  </style>
+
+  <div class="palette-stack">
+
+    <!-- ───── 01 ───── -->
+    <section class="pal pal-warm-cream">
+      <div class="pal-meta">
+        <span class="num">01</span>
+        <span class="name">Warm Cream</span>
+        <span class="tokens">paper #faf7f1 · ink #1a1714 · accent #c0593a — <em>current</em></span>
+        <span class="swatches">
+          <i style="background:#faf7f1"></i>
+          <i style="background:#f4efe6"></i>
+          <i style="background:#1a1714"></i>
+          <i style="background:#c0593a"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 02 ───── -->
+    <section class="pal pal-off-white">
+      <div class="pal-meta">
+        <span class="num">02</span>
+        <span class="name">Off-White</span>
+        <span class="tokens">paper #fbfaf7 · ink #16140f · accent #c0593a — <em>cleaner, modern editorial</em></span>
+        <span class="swatches">
+          <i style="background:#fbfaf7"></i>
+          <i style="background:#f3f1ec"></i>
+          <i style="background:#16140f"></i>
+          <i style="background:#c0593a"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 03 ───── -->
+    <section class="pal pal-bone">
+      <div class="pal-meta">
+        <span class="num">03</span>
+        <span class="name">Bone &amp; Ink</span>
+        <span class="tokens">paper #f5f2eb · ink #15140f · accent #b8472a — <em>warm but more grounded</em></span>
+        <span class="swatches">
+          <i style="background:#f5f2eb"></i>
+          <i style="background:#ebe6db"></i>
+          <i style="background:#15140f"></i>
+          <i style="background:#b8472a"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 04 ───── -->
+    <section class="pal pal-sage">
+      <div class="pal-meta">
+        <span class="num">04</span>
+        <span class="name">Soft Sage</span>
+        <span class="tokens">paper #f0eee6 · ink #1a1f17 · accent #c0593a — <em>organic, distinctive</em></span>
+        <span class="swatches">
+          <i style="background:#f0eee6"></i>
+          <i style="background:#e2e3d6"></i>
+          <i style="background:#1a1f17"></i>
+          <i style="background:#c0593a"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 05 ───── -->
+    <section class="pal pal-stone">
+      <div class="pal-meta">
+        <span class="num">05</span>
+        <span class="name">Cool Stone &amp; Mustard</span>
+        <span class="tokens">paper #ecebe5 · ink #1a1d22 · accent #c08a2a — <em>architect-firm vibe</em></span>
+        <span class="swatches">
+          <i style="background:#ecebe5"></i>
+          <i style="background:#dededa"></i>
+          <i style="background:#1a1d22"></i>
+          <i style="background:#c08a2a"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 06 ───── -->
+    <section class="pal pal-deep-ink">
+      <div class="pal-meta">
+        <span class="num">06</span>
+        <span class="name">Deep Ink (reverse)</span>
+        <span class="tokens">paper #161311 · ink #f4eee0 · accent #d97757 — <em>cinema / premium</em></span>
+        <span class="swatches">
+          <i style="background:#161311"></i>
+          <i style="background:#1f1a16"></i>
+          <i style="background:#f4eee0"></i>
+          <i style="background:#d97757"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+    <!-- ===== divider ===== -->
+    <div class="pal-divider">
+      <span class="tag">More radical</span>
+      Past this point, the palette stops respecting the current editorial system — typography, hierarchy, even the strip color may shift to match. Pick by <strong>vibe</strong>, not by detail.
+    </div>
+
+    <!-- ───── 07 ───── -->
+    <section class="pal pal-snow">
+      <div class="pal-meta">
+        <span class="num">07</span>
+        <span class="name">Snow / Brutalist</span>
+        <span class="tokens">paper #ffffff · ink #000000 · accent #ff3d00 — <em>pure, sharp, fearless</em></span>
+        <span class="swatches">
+          <i style="background:#ffffff"></i>
+          <i style="background:#f1f1f1"></i>
+          <i style="background:#000000"></i>
+          <i style="background:#ff3d00"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 08 ───── -->
+    <section class="pal pal-terminal">
+      <div class="pal-meta">
+        <span class="num">08</span>
+        <span class="name">Terminal</span>
+        <span class="tokens">paper #0a0a0a · ink #ffb000 · accent #4ade80 — <em>quant / data-room</em></span>
+        <span class="swatches">
+          <i style="background:#0a0a0a"></i>
+          <i style="background:#141414"></i>
+          <i style="background:#ffb000"></i>
+          <i style="background:#4ade80"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 09 ───── -->
+    <section class="pal pal-riso">
+      <div class="pal-meta">
+        <span class="num">09</span>
+        <span class="name">Risograph</span>
+        <span class="tokens">eggshell + cobalt + tomato — <em>print-shop, two-ink, playful</em></span>
+        <span class="swatches">
+          <i style="background:#f5efe2"></i>
+          <i style="background:#1d2a5c"></i>
+          <i style="background:#e64b35"></i>
+          <i style="background:#ece4d0"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 10 ───── -->
+    <section class="pal pal-acid">
+      <div class="pal-meta">
+        <span class="num">10</span>
+        <span class="name">Acid Pop</span>
+        <span class="tokens">paper #f2efe6 · ink #0a0a08 · accent #c4d92a — <em>contemporary, sharp, confident</em></span>
+        <span class="swatches">
+          <i style="background:#f2efe6"></i>
+          <i style="background:#e7e2d2"></i>
+          <i style="background:#0a0a08"></i>
+          <i style="background:#c4d92a"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 11 ───── -->
+    <section class="pal pal-glacial">
+      <div class="pal-meta">
+        <span class="num">11</span>
+        <span class="name">Glacial</span>
+        <span class="tokens">paper #edf0f2 · ink #0d1b2a · accent #2196b5 — <em>cool, technical, calm</em></span>
+        <span class="swatches">
+          <i style="background:#edf0f2"></i>
+          <i style="background:#dde3e8"></i>
+          <i style="background:#0d1b2a"></i>
+          <i style="background:#2196b5"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 12 ───── -->
+    <section class="pal pal-moss">
+      <div class="pal-meta">
+        <span class="num">12</span>
+        <span class="name">Moss (reverse)</span>
+        <span class="tokens">paper #1f2a1f · ink #e8e0cd · accent #d8893d — <em>dark organic, library quiet</em></span>
+        <span class="swatches">
+          <i style="background:#1f2a1f"></i>
+          <i style="background:#2a3a2a"></i>
+          <i style="background:#e8e0cd"></i>
+          <i style="background:#d8893d"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== divider — brand-aligned ===== -->
+    <div class="pal-divider" style="background:#1e2a5c">
+      <span class="tag" style="background:#4da13f">Closer to the current site</span>
+      The next four pull from <strong>terrieradtech.com</strong>'s actual palette — white ground, kelly green, navy ink, with a California-coastal lean. Same editorial layout as before, just dressed in the brand colors.
+    </div>
+
+    <!-- ───── 13 ───── -->
+    <section class="pal pal-terrier-classic">
+      <div class="pal-meta">
+        <span class="num">13</span>
+        <span class="name">Terrier Classic</span>
+        <span class="tokens">paper #ffffff · ink #1e2a5c · accent #4da13f — <em>faithful to terrieradtech.com</em></span>
+        <span class="swatches">
+          <i style="background:#ffffff"></i>
+          <i style="background:#f4f6f4"></i>
+          <i style="background:#1e2a5c"></i>
+          <i style="background:#4da13f"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 14 ───── -->
+    <section class="pal pal-coastal">
+      <div class="pal-meta">
+        <span class="num">14</span>
+        <span class="name">Coastal</span>
+        <span class="tokens">paper #eef4f8 · ink #1e2a5c · accent #4da13f — <em>palm-trees-and-sky</em></span>
+        <span class="swatches">
+          <i style="background:#eef4f8"></i>
+          <i style="background:#dde7ee"></i>
+          <i style="background:#1e2a5c"></i>
+          <i style="background:#4da13f"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 15 ───── -->
+    <section class="pal pal-sunlit">
+      <div class="pal-meta">
+        <span class="num">15</span>
+        <span class="name">Sunlit</span>
+        <span class="tokens">warm white · navy ink · green + sand accent — <em>Ojai-California warmth</em></span>
+        <span class="swatches">
+          <i style="background:#fcfaf4"></i>
+          <i style="background:#f3eedf"></i>
+          <i style="background:#1e2a5c"></i>
+          <i style="background:#4da13f"></i>
+          <i style="background:#d4b87a"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 16 ───── -->
+    <section class="pal pal-editorial-terrier">
+      <div class="pal-meta">
+        <span class="num">16</span>
+        <span class="name">Editorial Terrier</span>
+        <span class="tokens">cream + navy + green — <em>current layout, brand-aligned colors</em></span>
+        <span class="swatches">
+          <i style="background:#faf7f1"></i>
+          <i style="background:#f1ede2"></i>
+          <i style="background:#1e2a5c"></i>
+          <i style="background:#4da13f"></i>
+        </span>
+      </div>
+      <div class="hero">
+        <h2>Adtech that <span class="ital">earns its keep.</span></h2>
+        <div class="hero-side">
+          <div class="meta">2026 / consultancy</div>
+          <p class="lede">A small studio of senior practitioners building ranking, auction, and measurement systems for retail-media and marketplace platforms.</p>
+          <div class="actions"><a class="btn" href="#">Book a call →</a><a class="btn ghost" href="#">Services</a></div>
+        </div>
+      </div>
+      <div class="strip">
+        <span class="pill">Selected clients</span>
+        <span>JustEat</span><span class="dot"></span>
+        <span>eMAG</span><span class="dot"></span>
+        <span>Allegro</span><span class="dot"></span>
+        <span>Mercado Libre</span><span class="dot"></span>
+        <span>Pacvue</span>
+      </div>
+      <div class="dark-block">
+        <div>
+          <div class="eyebrow">Services / what we do</div>
+          <h3>Ranking, <span class="accent">auction,</span> measurement.</h3>
+        </div>
+        <div>
+          <div class="row"><span class="num">01</span><span class="label">Product strategy</span><span style="margin-left:auto">8 wks</span></div>
+          <div class="row"><span class="num">02</span><span class="label">System design</span><span style="margin-left:auto">12 wks</span></div>
+          <div class="row"><span class="num">03</span><span class="label">Applied science</span><span style="margin-left:auto">ongoing</span></div>
+        </div>
+      </div>
+    </section>
+
+  <div class="pal-foot">
+    <strong>Pick one — or mix.</strong> Say "<em>apply #9</em>" and I'll roll it across the home, about, services, and contact pages. Or call out specific tweaks — "<em>#10's ground but a different accent</em>" — and I'll wire that in. The radical ones (07–12) will also shift typography and the strip color to match the vibe.
+  </div>
+</body>
+</html>
