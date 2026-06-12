@@ -44,6 +44,25 @@
   text-transform: none; letter-spacing: 0;
 }
 
+/* Photo band — full-bleed editorial image */
+.home .photo-band {
+  position: relative; margin: 0;
+  border-bottom: 1px solid var(--ink);
+  background: var(--cream-2);
+}
+.home .photo-band img {
+  display: block; width: 100%; height: 52vh; min-height: 320px; max-height: 560px;
+  object-fit: cover; object-position: center 38%;
+}
+.home .photo-band figcaption {
+  position: absolute; bottom: 16px; left: 64px;
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--paper); background: rgba(26,23,20,0.55);
+  padding: 6px 12px; border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+
 /* Clients strip */
 .home .clients {
   padding: 56px 64px 64px;
@@ -306,6 +325,8 @@
   .home .team-grid { grid-template-columns: 1fr; gap: 48px; }
   .home .team-head h2 { font-size: 36px; }
   .home .strip { padding: 18px 24px; gap: 24px; }
+  .home .photo-band figcaption { left: 24px; }
+  .home .photo-band img { height: 40vh; }
   .home .services-head, .home .service-row { padding-left: 24px; padding-right: 24px; }
   .home .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 48px; padding-bottom: 56px; }
   .home .hero h1 { font-size: 64px; }

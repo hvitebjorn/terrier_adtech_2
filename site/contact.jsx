@@ -3,6 +3,14 @@
 const STORAGE_KEY = 'terrier_contact_draft_v1';
 const ENGAGEMENTS = ['Strategy', 'System design', 'Engineering', 'Data science', 'Not sure yet'];
 
+// "Next slot" — the quarter after the current one, rolling into the next year as needed.
+function nextQuarterLabel(now = new Date()) {
+  const q = Math.floor(now.getMonth() / 3) + 1; // current quarter, 1–4
+  const nextQ = q === 4 ? 1 : q + 1;
+  const year = q === 4 ? now.getFullYear() + 1 : now.getFullYear();
+  return `Q${nextQ} ${year}`;
+}
+
 function ContactPage() {
   useSmoothAnchors();
 
@@ -94,7 +102,7 @@ function ContactPage() {
               </div>
               <div>
                 <div className="label">Next slot</div>
-                <div className="val">Q3 2026</div>
+                <div className="val">{nextQuarterLabel()}</div>
               </div>
             </div>
           </div>

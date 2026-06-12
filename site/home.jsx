@@ -23,7 +23,7 @@ function Home() {
           Adtech that <span className="ital">earns</span> its keep.
         </h1>
         <div className="hero-side">
-          <div className="meta">Issue 01 — Adtech, deliberately</div>
+          <div className="meta">Adtech, deliberately</div>
           <p className="lede">
             We help large retail, travel, and media companies build and optimize the platforms that power their ad revenue — from product strategy to data science.
           </p>
@@ -46,10 +46,15 @@ function Home() {
         <span>Serving US · Europe · Latin America · Asia</span>
       </div>
 
+      <figure className="photo-band">
+        <img src="logos/terrier-run.jpg" alt="A terrier at full sprint on a gravel path" />
+        <figcaption>The namesake — small, fast, refuses to let go.</figcaption>
+      </figure>
+
       <section className="clients" id="clients">
         <div className="clients-head">
           <span className="eyebrow">Selected clients</span>
-          <span className="note">A small portfolio. Each one a long engagement.</span>
+          <span className="note">Trusted by leading retailers and media companies worldwide</span>
         </div>
         <div className="clients-grid">
            <div className="logo-cell"><img src={(window.__resources && window.__resources.mercadolibre) || "logos/mercadolibre.webp"} alt="Mercado Libre" /></div>
