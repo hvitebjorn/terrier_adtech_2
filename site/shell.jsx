@@ -1,13 +1,58 @@
 // Shared site chrome — Nav and Footer used across all pages.
 
+// Treat "/" and "/index.html" as the same page so in-page anchors resolve
+// whether the dev server serves clean URLs or explicit .html paths.
+function samePagePath(a, b) {
+  const norm = (p) => (p.replace(/index\.html$/, '').replace(/\/$/, '') || '/');
+  return norm(a) === norm(b);
+}
+
 function SiteNav({ active }) {
   const items = [
     { id: 'work', label: 'Work', href: 'index.html#work' },
-    { id: 'services', label: 'Services', href: 'services.html' },
     { id: 'approach', label: 'Approach', href: 'index.html#approach' },
-    { id: 'about', label: 'About', href: 'about.html' },
+    { id: 'services', label: 'Services', href: 'index.html#services' },
+    { id: 'about', label: 'About', href: 'index.html#founder' },
     { id: 'contact', label: 'Contact', href: 'contact.html' },
   ];
+
+  // Scroll-spy: for nav items that point to a section on THIS page (Work and
+  // Approach on the home page), highlight whichever section you've scrolled to,
+  // overriding the page's default `active`. Items that lead to other pages
+  // (Services/About/Contact) aren't spied and keep the passed-in `active`.
+  const [spy, setSpy] = React.useState(null);
+  React.useEffect(() => {
+    const here = window.location.pathname;
+    const targets = items
+      .map((it) => {
+        const url = new URL(it.href, window.location.href);
+        if (url.hash && samePagePath(url.pathname, here)) {
+          const el = document.querySelector(url.hash);
+          if (el) return { id: it.id, el };
+        }
+        return null;
+      })
+      .filter(Boolean);
+    if (targets.length === 0) return;
+
+    // Sort into document order so the "last section scrolled past" logic is
+    // correct even when nav order differs from page order.
+    targets.sort((a, b) => a.el.getBoundingClientRect().top - b.el.getBoundingClientRect().top);
+
+    const onScroll = () => {
+      const line = 140; // approx. nav height + breathing room
+      let current = targets[0].id;
+      for (const t of targets) {
+        if (t.el.getBoundingClientRect().top <= line) current = t.id;
+      }
+      setSpy(current);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const current = spy || active;
   return (
     <nav className="site-nav">
       <a className="logo" href="index.html" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -16,8 +61,8 @@ function SiteNav({ active }) {
       </a>
       <div className="nav-c">
         {items.map((it) => (
-          <a key={it.id} href={it.href} aria-current={active === it.id ? 'page' : undefined}
-            className={active === it.id ? 'is-active' : ''}>
+          <a key={it.id} href={it.href} aria-current={current === it.id ? 'page' : undefined}
+            className={current === it.id ? 'is-active' : ''}>
             {it.label}
           </a>
         ))}
@@ -61,7 +106,7 @@ function SiteFooter() {
       </div>
       <div className="colophon">
         <span>© 2026 Terrier AdTech LLC</span>
-        <span>Brooklyn · Remote · Worldwide</span>
+        <span>San Francisco · Los Angeles · Seattle · Remote · Worldwide</span>
       </div>
     </footer>
   );
@@ -75,7 +120,7 @@ function useSmoothAnchors() {
       if (!a) return;
       const url = new URL(a.href, window.location.href);
       // Same-page hash: smooth scroll
-      if (url.pathname === window.location.pathname && url.hash) {
+      if (url.hash && samePagePath(url.pathname, window.location.pathname)) {
         const el = document.querySelector(url.hash);
         if (el) {
           e.preventDefault();
@@ -85,6 +130,17 @@ function useSmoothAnchors() {
       }
     };
     document.addEventListener('click', onClick);
+
+    // Arriving from another page with a hash (e.g. index.html#approach):
+    // the target section is rendered by React after the browser's initial
+    // anchor jump, so scroll to it once on mount.
+    if (window.location.hash) {
+      try {
+        const el = document.querySelector(window.location.hash);
+        if (el) requestAnimationFrame(() => el.scrollIntoView({ block: 'start' }));
+      } catch (_) { /* invalid selector in hash — ignore */ }
+    }
+
     return () => document.removeEventListener('click', onClick);
   }, []);
 }

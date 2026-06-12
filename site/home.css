@@ -260,7 +260,7 @@
   backdrop-filter: blur(4px);
 }
 .home .portrait-lars::after { content: 'Lars Hirsch — Founder'; }
-.home .portrait-ram::after  { content: 'Ram — Partner & Principal Engineer'; }
+.home .portrait-ram::after  { content: 'Ram Pratiwadi — Partner & Principal Engineer'; }
 .home .member h3 {
   font-family: var(--serif); font-size: 28px; font-weight: 400;
   line-height: 1.15; letter-spacing: -0.015em; margin-top: 14px;

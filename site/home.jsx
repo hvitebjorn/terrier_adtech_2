@@ -3,22 +3,15 @@
 function Home() {
   useSmoothAnchors();
 
-  const services = [
-    { id: 'strategy',     n: '01', title: 'Product Strategy',
-      desc: 'Roadmap design, monetization architecture, and platform vision tied to revenue outcomes you can measure.' },
-    { id: 'system',       n: '02', title: 'System Design',
-      desc: 'Ad serving, auction, targeting, measurement — designed to scale and survive the next three platform shifts.' },
-    { id: 'engineering',  n: '03', title: 'Engineering',
-      desc: 'Implementation partners. Prototype to production. We write code, ship features, and stay accountable.' },
-    { id: 'data',         n: '04', title: 'Data Science',
-      desc: 'Ranking, pacing, attribution, and rigorous experimentation — the part most teams underinvest in.' },
-  ];
+  const services = SERVICES;
 
   const articles = [
-    { n: '01', topic: 'A/B Testing', t: 'Relevant and non-relevant users in A/B-testing.', date: 'May 2024',    read: '8 min', url: 'https://medium.com/@larshirsch' },
-    { n: '02', topic: 'Ranking',     t: 'Why graph-cluster designs keep winning in ads ranking.', date: 'Placeholder', read: '— min', url: 'https://medium.com/@larshirsch' },
-    { n: '03', topic: 'Auction',     t: 'Auctions for retail media: what most teams get wrong.',  date: 'Placeholder', read: '— min', url: 'https://medium.com/@larshirsch' },
-    { n: '04', topic: 'Attribution', t: 'Attribution after the cookie: a practical playbook.',    date: 'Placeholder', read: '— min', url: 'https://medium.com/@larshirsch' },
+    { n: '01', topic: 'Autobidding',  t: 'A Better Autobidding System for (Some) Retail Media Marketplaces', date: 'Mar 2026', read: '5 min', url: 'https://medium.com/@larshirsch/a-better-autobidding-system-for-some-retail-media-marketplaces-881d1adc8927' },
+    { n: '02', topic: 'Auction, Autobidding',      t: 'Auction mechanisms under Target ROAS automated bidding',           date: 'Apr 2025', read: '9 min', url: 'https://medium.com/@larshirsch/auction-mechanisms-under-target-roas-automated-bidding-71ae050a498e' },
+    { n: '03', topic: 'Auction',      t: 'First price or second price ad auctions — which is better?',        date: 'Jan 2025', read: '9 min', url: 'https://medium.com/@larshirsch/first-price-or-second-price-ad-auctions-which-is-better-1b756af5a188' },
+    { n: '04', topic: 'A/B Testing',  t: 'Relevant and non-relevant users in A/B-testing',                   date: 'Jun 2024', read: '5 min', url: 'https://medium.com/@larshirsch/relevant-and-non-relevant-users-in-a-b-testing-5f189803a596' },
+    { n: '05', topic: 'A/B Testing',  t: 'A/B-testing in marketplaces with complex dynamics',                date: 'Apr 2024', read: '4 min', url: 'https://medium.com/@larshirsch/a-b-testing-in-marketplaces-with-complex-dynamics-d084a63b60d6' },
+    { n: '06', topic: 'A/B Testing',  t: 'Unlock retail media ads performance: measure the long term effects the right way', date: 'Apr 2024', read: '3 min', url: 'https://medium.com/@larshirsch/unlock-retail-media-ads-performance-measure-the-long-term-effects-the-right-way-bb58824921b6' },
   ];
 
   return (
@@ -59,10 +52,10 @@ function Home() {
           <span className="note">A small portfolio. Each one a long engagement.</span>
         </div>
         <div className="clients-grid">
+           <div className="logo-cell"><img src={(window.__resources && window.__resources.mercadolibre) || "logos/mercadolibre.webp"} alt="Mercado Libre" /></div>
           <div className="logo-cell"><img src={(window.__resources && window.__resources.justeat) || "logos/justeat.webp"} alt="Just Eat Takeaway" /></div>
+           <div className="logo-cell"><img src={(window.__resources && window.__resources.allegro) || "logos/allegro.webp"} alt="Allegro" /></div>
           <div className="logo-cell"><img src={(window.__resources && window.__resources.emag) || "logos/emag.png"} alt="eMAG" /></div>
-          <div className="logo-cell"><img src={(window.__resources && window.__resources.allegro) || "logos/allegro.webp"} alt="Allegro" /></div>
-          <div className="logo-cell"><img src={(window.__resources && window.__resources.mercadolibre) || "logos/mercadolibre.webp"} alt="Mercado Libre" /></div>
           <div className="logo-cell"><img src={(window.__resources && window.__resources.pacvue) || "logos/pacvue.webp"} alt="Pacvue" /></div>
           <div className="logo-cell"><img src={(window.__resources && window.__resources.topsort) || "logos/topsort.webp"} alt="Topsort" /></div>
         </div>
@@ -181,7 +174,7 @@ function Home() {
           <article className="member">
             <div className="portrait portrait-ram" />
             <div className="member-body">
-              <div className="eyebrow">Partner & Principal Engineer · Ram</div>
+              <div className="eyebrow">Partner & Principal Engineer · Ram Pratiwadi</div>
               <h3>System design, engineering, and platform strategy.</h3>
               <p className="bio">
                 Two decades shipping ad-serving, auction, and measurement systems at hyperscale. Engineering leadership across retail media, social, and search platforms — the kind of operator clients lean on when the architecture has to outlive the quarter.

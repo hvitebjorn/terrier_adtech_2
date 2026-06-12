@@ -89,18 +89,13 @@
 .about-page .intro-flip > * { direction: ltr; }
 
 .about-page .portrait-ram {
-  background-image: linear-gradient(135deg, #ddd1bd 0%, #c9bba2 100%) !important;
+  background-image: url('logos/ram.png') !important;
+  background-size: cover;
+  background-position: center 22%;
   position: relative;
 }
 .about-page .portrait-ram::after {
-  content: 'Ram — Partner & Principal Engineer';
-}
-.about-page .portrait-ram::before {
-  content: 'R';
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--serif); font-style: italic; font-size: 240px;
-  color: var(--terra); opacity: .35;
+  content: 'Ram Pratiwadi — Partner & Principal Engineer' !important;
 }
 .about-page .portrait::after {
   content: 'Lars Hirsch — Founder';

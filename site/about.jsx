@@ -88,7 +88,7 @@ function AboutPage() {
         <div className="portrait portrait-ram" />
         <div>
           <span className="eyebrow">Partner & Principal Engineer · 02</span>
-          <h1>Ram.</h1>
+          <h1>Ram Pratiwadi.</h1>
           <p className="lede">
             An engineering leader who has spent his career designing the ad systems that show up on your phone every day.
           </p>
