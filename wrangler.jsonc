@@ -1,0 +1,13 @@
+{
+  // Cloudflare Worker that serves the static site in `site/` and handles the
+  // contact form at POST /api/contact. Deploy with: wrangler deploy
+  "name": "terrier-adtech-website-2",
+  "main": "worker/index.js",
+  "compatibility_date": "2025-06-01",
+  "assets": {
+    // Everything in site/ is served as a static asset. Requests that don't
+    // match a file (e.g. /api/contact) fall through to the Worker in main.
+    "directory": "./site",
+    "binding": "ASSETS"
+  }
+}
