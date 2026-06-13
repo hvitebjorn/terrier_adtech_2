@@ -8,6 +8,12 @@
     // Everything in site/ is served as a static asset. Requests that don't
     // match a file (e.g. /api/contact) fall through to the Worker in main.
     "directory": "./site",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    // Run the Worker BEFORE serving static assets. Without this, a request
+    // that matches a file (e.g. the apex hitting "/" -> index.html) is served
+    // directly and the Worker never runs — so the apex -> www redirect in
+    // worker/index.js would be skipped. The Worker still falls back to
+    // env.ASSETS.fetch() for normal page loads.
+    "run_worker_first": true
   }
 }
