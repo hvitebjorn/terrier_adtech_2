@@ -13,9 +13,20 @@
 
 import { onRequestPost, onRequestOptions } from '../functions/api/contact.js';
 
+// Canonical host — the site lives at www.terrieradtech.com; the bare apex
+// permanently redirects there.
+const CANONICAL_HOST = 'www.terrieradtech.com';
+const APEX_HOST = 'terrieradtech.com';
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    // Send apex -> www, preserving path + query string.
+    if (url.hostname === APEX_HOST) {
+      url.hostname = CANONICAL_HOST;
+      return Response.redirect(url.toString(), 301);
+    }
 
     if (url.pathname === '/api/contact') {
       if (request.method === 'POST') return onRequestPost({ request, env });
