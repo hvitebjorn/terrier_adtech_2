@@ -191,12 +191,6 @@ function Home() {
             </div>
           </article>
         </div>
-
-        <div style={{ marginTop: 40, textAlign: 'center' }}>
-          <a className="btn ghost" href="about.html" style={{ textDecoration: 'none' }}>
-            Read the full bios →
-          </a>
-        </div>
       </section>
 
       <section className="cta" id="contact">
