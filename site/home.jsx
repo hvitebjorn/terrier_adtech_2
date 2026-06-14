@@ -43,7 +43,7 @@ function Home() {
         <span className="pill">Snap</span>
         <span className="pill">Microsoft</span>
         <span style={{ flex: 1 }} />
-        <span>Serving US · Europe · Latin America · Asia</span>
+        <span>Serving the US · Europe · Latin America · Asia</span>
       </div>
 
       <figure className="photo-band">
