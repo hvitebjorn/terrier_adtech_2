@@ -84,7 +84,7 @@
 }
 .home .clients-grid .logo-cell {
   display: flex; align-items: center; justify-content: center;
-  height: 64px; padding: 0 12px;
+  height: 76px; padding: 0 12px;
 }
 .home .clients-grid .logo-cell img {
   max-height: 100%; max-width: 100%;
@@ -92,6 +92,13 @@
   filter: grayscale(1) contrast(0.85) opacity(0.55);
   transition: filter .25s ease;
 }
+
+/* Per-logo optical balancing. The logos have different crops/aspect ratios,
+   so equal box sizes don't read as equal. eMAG is a wide, tightly-cropped
+   wordmark that otherwise spans the full cell width and dominates — cap its
+   width so its mark matches the others. Tune these by eye. */
+.home .clients-grid .logo-emag img { max-width: 74%; }
+.home .clients-grid .logo-justeat img { max-width: 90%; }
 .home .clients-grid .logo-cell:hover img {
   filter: grayscale(0) contrast(1) opacity(1);
 }

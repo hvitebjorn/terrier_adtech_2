@@ -57,12 +57,12 @@ function Home() {
           <span className="note">Trusted by leading retailers and media companies worldwide</span>
         </div>
         <div className="clients-grid">
-           <div className="logo-cell"><img src={(window.__resources && window.__resources.mercadolibre) || "logos/mercadolibre.webp"} alt="Mercado Libre" /></div>
-          <div className="logo-cell"><img src={(window.__resources && window.__resources.justeat) || "logos/justeat.webp"} alt="Just Eat Takeaway" /></div>
-           <div className="logo-cell"><img src={(window.__resources && window.__resources.allegro) || "logos/allegro.webp"} alt="Allegro" /></div>
-          <div className="logo-cell"><img src={(window.__resources && window.__resources.emag) || "logos/emag.png"} alt="eMAG" /></div>
-          <div className="logo-cell"><img src={(window.__resources && window.__resources.pacvue) || "logos/pacvue.webp"} alt="Pacvue" /></div>
-          <div className="logo-cell"><img src={(window.__resources && window.__resources.topsort) || "logos/topsort.webp"} alt="Topsort" /></div>
+           <div className="logo-cell logo-mercadolibre"><img src={(window.__resources && window.__resources.mercadolibre) || "logos/mercadolibre.webp"} alt="Mercado Libre" /></div>
+          <div className="logo-cell logo-justeat"><img src={(window.__resources && window.__resources.justeat) || "logos/justeat.webp"} alt="Just Eat Takeaway" /></div>
+           <div className="logo-cell logo-allegro"><img src={(window.__resources && window.__resources.allegro) || "logos/allegro.webp"} alt="Allegro" /></div>
+          <div className="logo-cell logo-emag"><img src={(window.__resources && window.__resources.emag) || "logos/emag.png"} alt="eMAG" /></div>
+          <div className="logo-cell logo-pacvue"><img src={(window.__resources && window.__resources.pacvue) || "logos/pacvue.webp"} alt="Pacvue" /></div>
+          <div className="logo-cell logo-topsort"><img src={(window.__resources && window.__resources.topsort) || "logos/topsort.webp"} alt="Topsort" /></div>
         </div>
       </section>
 
