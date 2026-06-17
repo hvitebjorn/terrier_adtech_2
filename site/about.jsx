@@ -3,21 +3,6 @@
 function AboutPage() {
   useSmoothAnchors();
 
-  const larsCareer = [
-    ['2023→',  'Terrier AdTech', 'Founder',             'Adtech consulting'],
-    ['2020–23','Snap Inc.',      'Director, Ads ML',    'Ranking, auction'],
-    ['2017–20','Amazon',         'Principal SDE / Sci', 'Sponsored ads'],
-    ['2013–17','Google',         'Senior Eng Lead',     'Ads serving'],
-    ['2009–13','Microsoft',      'Eng Lead',            'Bing ads'],
-  ];
-
-  const ramCareer = [
-    ['2023→',  'Terrier AdTech', 'Partner & Principal Engineer', 'Adtech consulting'],
-    ['—',      'Big Tech',       'Engineering Leader',  'Ad systems at scale'],
-    ['—',      'Big Tech',       'Principal Engineer',  'Auction & serving'],
-    ['—',      'Big Tech',       'Tech Lead',           'Platforms'],
-  ];
-
   return (
     <div className="tat-root about-page">
       <SiteNav active="about" />
@@ -41,24 +26,6 @@ function AboutPage() {
           </div>
         </div>
         <div className="portrait" />
-      </section>
-
-      <section className="career">
-        <span className="eyebrow">Lars · Career</span>
-        <div className="career-head">
-          <span>Year</span><span>Company</span><span>Role</span><span>Domain</span>
-        </div>
-        {larsCareer.map((row, i) => (
-          <div key={i} className="career-row">
-            <span className="yr">{row[0]}</span>
-            <span className="co">{row[1]}</span>
-            <span className="role">{row[2]}</span>
-            <span className="domain">{row[3]}</span>
-          </div>
-        ))}
-        <div style={{ marginTop: 20, fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--muted-2)', letterSpacing: '0.08em' }}>
-          * Roles shown for context — placeholder dates pending Lars's confirmation.
-        </div>
       </section>
 
       <section className="extras">
@@ -101,24 +68,6 @@ function AboutPage() {
           <div style={{ marginTop: 32, display: 'flex', gap: 12 }}>
             <a className="btn" href="contact.html" style={{ textDecoration: 'none' }}>Start a conversation</a>
           </div>
-        </div>
-      </section>
-
-      <section className="career">
-        <span className="eyebrow">Ram · Career</span>
-        <div className="career-head">
-          <span>Year</span><span>Company</span><span>Role</span><span>Domain</span>
-        </div>
-        {ramCareer.map((row, i) => (
-          <div key={i} className="career-row">
-            <span className="yr">{row[0]}</span>
-            <span className="co">{row[1]}</span>
-            <span className="role">{row[2]}</span>
-            <span className="domain">{row[3]}</span>
-          </div>
-        ))}
-        <div style={{ marginTop: 20, fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--muted-2)', letterSpacing: '0.08em' }}>
-          * Detailed background pending Ram's confirmation.
         </div>
       </section>
 
