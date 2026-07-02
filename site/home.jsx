@@ -197,7 +197,7 @@ function Home() {
               <div className="eyebrow">Principal AI & ML Scientist · Yannet Interian</div>
               <h3>Machine learning, deep learning, and applied AI.</h3>
               <p className="bio">
-                Five years at Google modeling ad quality and user value across YouTube and Google TV Ads, then a decade teaching Machine Learning and Deep Learning as a professor. Brings modern deep-learning and transformer methods to ranking, recommendation, and measurement.
+                Half a decade at Google modeling ad quality, user segmentation, and customer lifetime value, then a decade teaching Machine Learning and Deep Learning as a professor. Brings modern deep-learning and transformer methods to ranking, recommendation, and measurement.
               </p>
               <div className="credits">
                 <span>Ph.D. Applied Mathematics · Cornell</span>

@@ -102,7 +102,7 @@ function AboutPage() {
             A machine-learning scientist who has carried deep learning from Google-scale ad systems into the classroom — and back into practice.
           </p>
           <p className="body">
-            Yannet spent five years as a data scientist at Google, building models for ad quality, user segmentation, and lifetime value across YouTube and Google TV Ads. She then took that work into startups as a senior data scientist and co-founder, shipping machine-learning systems end to end.
+            Yannet spent half a decade as a data scientist at Google, building models for ad quality, user segmentation, and customer lifetime value. She then took that work into startups as a senior data scientist and co-founder, shipping machine-learning systems end to end.
           </p>
           <p className="body">
             For over a decade she was a Professor of Data Science at the University of San Francisco, teaching Machine Learning and Deep Learning, with visiting appointments at UC Berkeley's Statistics Department and Esade in Barcelona. At Terrier she advises on the AI and ML side of the craft — bringing modern deep-learning and transformer methods to ranking, recommendation, and measurement.
