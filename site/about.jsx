@@ -93,6 +93,50 @@ function AboutPage() {
         </div>
       </section>
 
+      {/* ──────────── Yannet ──────────── */}
+      <section className="intro" id="yannet">
+        <div>
+          <span className="eyebrow">Principal AI & ML Scientist · 03</span>
+          <h1>Yannet Interian.</h1>
+          <p className="lede">
+            A machine-learning scientist who has carried deep learning from Google-scale ad systems into the classroom — and back into practice.
+          </p>
+          <p className="body">
+            Yannet spent five years as a data scientist at Google, building models for ad quality, user segmentation, and lifetime value across YouTube and Google TV Ads. She then took that work into startups as a senior data scientist and co-founder, shipping machine-learning systems end to end.
+          </p>
+          <p className="body">
+            For over a decade she was a Professor of Data Science at the University of San Francisco, teaching Machine Learning and Deep Learning, with visiting appointments at UC Berkeley's Statistics Department and Esade in Barcelona. At Terrier she advises on the AI and ML side of the craft — bringing modern deep-learning and transformer methods to ranking, recommendation, and measurement.
+          </p>
+          <div style={{ marginTop: 32, display: 'flex', gap: 12 }}>
+            <a className="btn" href="contact.html" style={{ textDecoration: 'none' }}>Start a conversation</a>
+            <a className="btn ghost" href="https://www.linkedin.com/in/interian/" target="_blank" rel="noopener" style={{ textDecoration: 'none' }}>LinkedIn →</a>
+          </div>
+        </div>
+        <div className="portrait portrait-yannet" />
+      </section>
+
+      <section className="extras">
+        <div>
+          <span className="eyebrow">Yannet · Education</span>
+          <div className="item">
+            <h3>Cornell University</h3>
+            <p>Ph.D. Applied Mathematics</p>
+          </div>
+          <div className="item">
+            <h3>UC Berkeley</h3>
+            <p>Postdoctoral researcher, Statistics</p>
+          </div>
+        </div>
+        <div>
+          <span className="eyebrow">Yannet · Selected work</span>
+          <div className="item" style={{ borderTop: '1px solid var(--line)' }}>
+            <p style={{ marginTop: 0, fontSize: 14, color: 'var(--ink-2)' }}>
+              Five years at Google modeling ad quality, user value, and engagement across YouTube and Google TV Ads. A decade teaching Machine Learning and Deep Learning as a Professor of Data Science at USF. Research applying deep learning and transformers to natural language, recommendation systems, and applied science.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <SiteFooter />
     </div>
   );

@@ -260,7 +260,7 @@
 }
 .home .team-head h2 em { font-style: italic; color: var(--terra); }
 .home .team-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px;
 }
 .home .member {
   display: grid; grid-template-rows: auto 1fr; gap: 32px;
@@ -277,6 +277,10 @@
   background-image: url('logos/ram.png');
   background-size: cover; background-position: center 22%;
 }
+.home .portrait-yannet {
+  background-image: url('logos/yannet.webp');
+  background-size: cover; background-position: center 20%;
+}
 .home .member .portrait::after {
   position: absolute; bottom: 16px; left: 16px;
   font-family: var(--mono); font-size: 10px;
@@ -287,6 +291,7 @@
 }
 .home .portrait-lars::after { content: 'Lars Hirsch — Founder'; }
 .home .portrait-ram::after  { content: 'Ram Pratiwadi — Partner & Principal Engineer'; }
+.home .portrait-yannet::after { content: 'Yannet Interian — Principal AI & ML Scientist'; }
 .home .member h3 {
   font-family: var(--serif); font-size: 28px; font-weight: 400;
   line-height: 1.15; letter-spacing: -0.015em; margin-top: 14px;

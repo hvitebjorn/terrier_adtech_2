@@ -97,6 +97,15 @@
 .about-page .portrait-ram::after {
   content: 'Ram Pratiwadi — Partner & Principal Engineer' !important;
 }
+.about-page .portrait-yannet {
+  background-image: url('logos/yannet.webp') !important;
+  background-size: cover;
+  background-position: center 20%;
+  position: relative;
+}
+.about-page .portrait-yannet::after {
+  content: 'Yannet Interian — Principal AI & ML Scientist' !important;
+}
 .about-page .portrait::after {
   content: 'Lars Hirsch — Founder';
   position: absolute; bottom: 16px; left: 16px;

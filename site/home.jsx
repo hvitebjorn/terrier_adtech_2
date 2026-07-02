@@ -157,7 +157,7 @@ function Home() {
       <section className="team" id="founder">
         <div className="team-head">
           <div className="eyebrow">The team</div>
-          <h2 style={{ marginTop: 14 }}>Two operators. <em>Twenty years</em> at the bench, each.</h2>
+          <h2 style={{ marginTop: 14 }}>Three operators. <em>Decades</em> at the bench.</h2>
         </div>
 
         <div className="team-grid">
@@ -187,6 +187,21 @@ function Home() {
               <div className="credits">
                 <span>Engineering leadership · Big Tech</span>
                 <span>Ad systems · Platforms · Scale</span>
+              </div>
+            </div>
+          </article>
+
+          <article className="member">
+            <div className="portrait portrait-yannet" />
+            <div className="member-body">
+              <div className="eyebrow">Principal AI & ML Scientist · Yannet Interian</div>
+              <h3>Machine learning, deep learning, and applied AI.</h3>
+              <p className="bio">
+                Five years at Google modeling ad quality and user value across YouTube and Google TV Ads, then a decade teaching Machine Learning and Deep Learning as a professor. Brings modern deep-learning and transformer methods to ranking, recommendation, and measurement.
+              </p>
+              <div className="credits">
+                <span>Ph.D. Applied Mathematics · Cornell</span>
+                <span>Deep learning · Transformers · NLP</span>
               </div>
             </div>
           </article>
